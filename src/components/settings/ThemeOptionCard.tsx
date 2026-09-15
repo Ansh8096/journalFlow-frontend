@@ -1,3 +1,4 @@
+// ThemeOptionCard.tsx
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -38,7 +39,6 @@ export default function ThemeOptionCard({
                     group
                     relative
                     flex
-                    min-h-[220px]
                     w-full
                     flex-col
                     items-center
@@ -47,7 +47,7 @@ export default function ThemeOptionCard({
                     border
                     bg-background
                     px-4
-                    py-4
+                    py-5
                     text-center
                     transition-all
                     duration-200
@@ -75,17 +75,18 @@ export default function ThemeOptionCard({
                     `,
             )}
         >
-            {/* Selection Indicator */}
+            {/* Selection Indicator — shrunk slightly to match the more
+                compact overall card. */}
             <span
                 aria-hidden="true"
                 className={cn(
                     `
                         absolute
-                        right-4
-                        top-4
+                        right-3
+                        top-3
                         flex
-                        h-5
-                        w-5
+                        h-4
+                        w-4
                         items-center
                         justify-center
                         rounded-full
@@ -105,17 +106,20 @@ export default function ThemeOptionCard({
                 )}
             >
                 {selected && (
-                    <span className="h-2 w-2 rounded-full bg-white" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-white" />
                 )}
             </span>
 
-            {/* Theme Icon */}
+            {/* Theme Icon — h-24/h-12 was oversized relative to the
+                target's compact card; scaled down along with removing
+                the fixed min-h-[220px] on the card itself, which was
+                the main reason these cards read taller than target. */}
             <div
                 className={cn(
                     `
                         flex
-                        h-24
-                        w-24
+                        h-14
+                        w-14
                         items-center
                         justify-center
                         rounded-2xl
@@ -133,7 +137,7 @@ export default function ThemeOptionCard({
             >
                 <Icon
                     className={cn(
-                        "h-12 w-12",
+                        "h-7 w-7",
                         selected
                             ? "text-violet-600 dark:text-violet-400"
                             : "text-muted-foreground",
@@ -143,10 +147,10 @@ export default function ThemeOptionCard({
             </div>
 
             {/* Theme Text */}
-            <div className="mt-5 space-y-1">
+            <div className="mt-3 space-y-0.5">
                 <h3
                     className={cn(
-                        "text-lg font-semibold",
+                        "text-base font-semibold",
                         selected &&
                             "text-violet-600 dark:text-violet-400",
                     )}
@@ -154,7 +158,7 @@ export default function ThemeOptionCard({
                     {title}
                 </h3>
 
-                <p className="text-sm leading-5 text-muted-foreground">
+                <p className="text-xs leading-5 text-muted-foreground">
                     {description}
                 </p>
             </div>

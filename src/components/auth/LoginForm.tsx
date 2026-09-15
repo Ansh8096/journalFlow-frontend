@@ -55,16 +55,16 @@ const LoginForm = () => {
     });
 
     useEffect(() => {
-
         const message =
-            searchParams.get(
-                "message",
-            );
+            searchParams.get("message");
+
+        if (!message) {
+            return;
+        }
 
         if (
             message === "account_exists"
         ) {
-
             toast.error(
                 "Account already exists.",
                 {
@@ -77,7 +77,6 @@ const LoginForm = () => {
         if (
             message === "google_account_created"
         ) {
-
             toast.success(
                 "Account created successfully.",
                 {
@@ -87,7 +86,28 @@ const LoginForm = () => {
             );
         }
 
-    }, [searchParams]);
+        if (
+            message === "account_deleted"
+        ) {
+            toast.success(
+                "Account deleted successfully.",
+                {
+                    description:
+                        "Your JournalFlow account and all associated data have been permanently deleted.",
+                },
+            );
+        }
+
+        navigate(
+            ROUTES.LOGIN,
+            {
+                replace: true,
+            },
+        );
+    }, [
+        searchParams,
+        navigate,
+    ]);
 
     const onSubmit = async (values: LoginFormValues): Promise<void> => {
         try {

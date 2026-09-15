@@ -61,7 +61,7 @@ export default function AppearanceCard() {
 
     return (
         <Card className="overflow-hidden rounded-md">
-            <CardContent className="p-4 sm:p-7">
+            <CardContent className="p-4 sm:p-6">
                 {/* Appearance Header */}
                 <div className="flex items-start gap-4">
                     <div
@@ -79,8 +79,8 @@ export default function AppearanceCard() {
                     >
                         <Palette
                             className="
-                                h-6
-                                w-6
+                                h-8
+                                w-7
                                 text-violet-600
                                 dark:text-violet-400
                             "

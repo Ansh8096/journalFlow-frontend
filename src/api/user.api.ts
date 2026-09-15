@@ -13,17 +13,17 @@ import type {
 import type { MessageResponse } from "@/types/api/common";
 import type { AuthResponse } from "@/types/api/auth";
 
-class UserApi{
+class UserApi {
 
-    async getProfile(): Promise<UserProfile>{
+    async getProfile(): Promise<UserProfile> {
         const { data } = await client.get<UserProfile>("/users/me")
         return data;
     }
 
     async UploadProfileImage(formData: FormData): Promise<ProfileImageResponse> {
-        
-        
-        const {data} = await client.patch<ProfileImageResponse>(
+
+
+        const { data } = await client.patch<ProfileImageResponse>(
             "/users/me/profile-image",
             formData,
             {
@@ -33,7 +33,7 @@ class UserApi{
             }
         );
         console.log("The updateProfile method is called, response: ", data.message);
-        
+
 
         return data;
     }
@@ -46,11 +46,11 @@ class UserApi{
         );
 
         console.log("updateProfile method is called, response: ", data);
-        
+
         return data;
     }
 
-    async changePassword( request: ChangePasswordRequest): Promise<MessageResponse> {
+    async changePassword(request: ChangePasswordRequest): Promise<MessageResponse> {
 
         const { data } = await client.patch<MessageResponse>(
             "/users/me/password",
@@ -87,7 +87,7 @@ class UserApi{
     }
 
     async deleteAccount(request: DeleteAccountRequest): Promise<MessageResponse> {
-    
+
         // Axios supports sending a request body with DELETE, but it has to be passed in the config object...
         const { data } = await client.delete<MessageResponse>(
             "/users/me",
@@ -95,10 +95,23 @@ class UserApi{
                 data: request,
             }
         );
-    
+
         return data;
     }
 
+    async startGoogleAccountDeletion(): Promise<{
+        authorizationUrl: string;
+    }> {
+
+        const { data } =
+            await client.post<{
+                authorizationUrl: string;
+            }>(
+                "/auth/oauth2/google/delete-account/start",
+            );
+
+        return data;
+    }
 }
 
 export default new UserApi();

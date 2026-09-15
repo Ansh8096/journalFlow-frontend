@@ -19,6 +19,8 @@ export interface UserProfile {
     roles: Role[];
     createdAt: string;
     updatedAt: string;
+    hasPassword: boolean;
+    hasGoogle: boolean;
 }
 
 export interface UpdateProfileRequest {

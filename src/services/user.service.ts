@@ -14,24 +14,24 @@ import type { MessageResponse } from "@/types/api/common";
 import type { AuthResponse } from "@/types/api/auth";
 
 
-class UserService{
+class UserService {
 
     async getProfile(): Promise<UserProfile> {
         return await userApi.getProfile();
     }
 
-    async updateProfile(request: UpdateProfileRequest): Promise<MessageResponse>{
+    async updateProfile(request: UpdateProfileRequest): Promise<MessageResponse> {
         return await userApi.updateProfile(request);
     }
 
-    async uploadProfileImage(image: File): Promise<ProfileImageResponse>{
+    async uploadProfileImage(image: File): Promise<ProfileImageResponse> {
         const formData = new FormData();
         formData.append("image", image);
 
         return await userApi.UploadProfileImage(formData);
     }
 
-    async changePassword(request: ChangePasswordRequest) : Promise<MessageResponse>{
+    async changePassword(request: ChangePasswordRequest): Promise<MessageResponse> {
         return await userApi.changePassword(request);
     }
 
@@ -47,7 +47,12 @@ class UserService{
         return await userApi.deleteAccount(request);
     }
 
-    
+    async startGoogleAccountDeletion(): Promise<{
+        authorizationUrl: string;
+    }> {
+
+        return await userApi.startGoogleAccountDeletion();
+    }
 }
 
 export default new UserService();

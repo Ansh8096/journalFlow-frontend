@@ -74,14 +74,16 @@ export function PersonalInformationCard({
                     }
                     value={user.email}
                     action={
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={onEditEmail}
-                        >
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit
-                        </Button>
+                        !user.hasGoogle ? (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={onEditEmail}
+                            >
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                            </Button>
+                        ) : undefined
                     }
                 />
             </CardContent>

@@ -63,6 +63,7 @@ import {
 } from "@/schemas/profile/delete-account";
 
 import { ROUTES } from "@/constants/app/routes";
+import userService from "@/services/user.service";
 
 interface DeleteAccountDialogProps {
     open: boolean;
@@ -79,6 +80,8 @@ export default function DeleteAccountDialog({
         user,
         logout,
     } = useAuth();
+
+
 
     const navigate =
         useNavigate();
@@ -99,6 +102,11 @@ export default function DeleteAccountDialog({
             },
         });
 
+    const isGoogleOnly =
+        !!user &&
+        !user.hasPassword &&
+        user.hasGoogle;
+
     /*
      * Reset the form whenever the dialog opens.
      */
@@ -112,6 +120,41 @@ export default function DeleteAccountDialog({
         });
     }, [open, form]);
 
+    const handleGoogleDelete = async () => {
+
+        if (isPending) {
+            return;
+        }
+
+        try {
+
+            const {
+                authorizationUrl,
+            } =
+                await userService.startGoogleAccountDeletion();
+
+            onOpenChange(false);
+
+            const apiBaseUrl =
+                import.meta.env.VITE_API_BASE_URL as string;
+
+            const backendBaseUrl =
+                apiBaseUrl.replace(
+                    /\/api\/v1\/?$/,
+                    "",
+                );
+
+            window.location.href =
+                `${backendBaseUrl}${authorizationUrl}`;
+
+        } catch (error) {
+
+            toast.error(
+                getErrorMessage(error),
+            );
+        }
+    };
+
     /*
      * ----------------------------------------
      * Account deletion
@@ -120,40 +163,19 @@ export default function DeleteAccountDialog({
     const onSubmit = async (
         data: DeleteAccountFormData,
     ) => {
-        try {
-            /*
-             * The mutation:
-             *
-             * 1. Sends DELETE /users/me
-             * 2. Clears React Query cache
-             *
-             * See useDeleteAccount.ts.
-             */
-            await deleteAccount(
-                data,
-            );
 
-            /*
-             * Close the dialog before leaving the page.
-             */
+        if (isGoogleOnly) {
+            return;
+        }
+
+        try {
+
+            await deleteAccount(data);
+
             onOpenChange(false);
 
-            /*
-             * Clear authenticated-user state and let
-             * authService perform the actual auth-storage
-             * cleanup.
-             *
-             * Your existing AuthContext already does:
-             *
-             * authService.logout()
-             * setUser(null)
-             */
             logout();
 
-            /*
-             * Explicitly replace the current route so the
-             * deleted account cannot remain on /settings.
-             */
             navigate(
                 ROUTES.LOGIN,
                 {
@@ -161,14 +183,8 @@ export default function DeleteAccountDialog({
                 },
             );
 
-            toast.success(
-                "Account deleted successfully.",
-            );
         } catch (error) {
-            /*
-             * If the backend returns a field-specific
-             * password error, bind it to the form.
-             */
+
             if (
                 applyServerFormError(
                     error,
@@ -178,13 +194,8 @@ export default function DeleteAccountDialog({
                 return;
             }
 
-            /*
-             * Otherwise show the generic server error.
-             */
             toast.error(
-                getErrorMessage(
-                    error,
-                ),
+                getErrorMessage(error),
             );
         }
     };
@@ -261,8 +272,10 @@ export default function DeleteAccountDialog({
                             </DialogTitle>
 
                             <DialogDescription className="mt-1">
-                                This action permanently deletes your
-                                account and all associated data.
+                                {isGoogleOnly
+                                    ? "This action permanently deletes your account and all associated data. You will need to reauthenticate with Google before your account can be deleted."
+                                    : "This action permanently deletes your account and all associated data."
+                                }
                             </DialogDescription>
                         </div>
                     </div>
@@ -298,34 +311,50 @@ export default function DeleteAccountDialog({
                         )}
                         className="space-y-6"
                     >
-                        <FormField
-                            control={
-                                form.control
-                            }
-                            name="password"
-                            render={({
-                                field,
-                            }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Current Password
-                                    </FormLabel>
+                        {isGoogleOnly ? (
+                            <div
+                                className="
+                                    rounded-lg
+                                    border
+                                    bg-muted/40
+                                    px-4
+                                    py-4
+                                "
+                            >
+                                <p className="text-sm font-medium">
+                                    Google authentication required
+                                </p>
 
-                                    <FormControl>
-                                        <PasswordInput
-                                            autoComplete="new-password"
-                                            placeholder="Enter your current password"
-                                            disabled={
-                                                isPending
-                                            }
-                                            {...field}
-                                        />
-                                    </FormControl>
+                                <p className="mt-1 text-sm leading-5 text-muted-foreground">
+                                    This account is managed through Google.
+                                    Reauthenticate with Google to permanently
+                                    delete your account.
+                                </p>
+                            </div>
+                        ) : (
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Current Password
+                                        </FormLabel>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                        <FormControl>
+                                            <PasswordInput
+                                                autoComplete="current-password"
+                                                placeholder="Enter your current password"
+                                                disabled={isPending}
+                                                {...field}
+                                            />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
 
                         <div
                             className="
@@ -358,7 +387,7 @@ export default function DeleteAccountDialog({
                             </p>
                         </div>
 
-                        <DialogFooter className="gap-2 sm:gap-0">
+                        <DialogFooter className="gap-2 sm:gap-2">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -371,33 +400,47 @@ export default function DeleteAccountDialog({
                                         false,
                                     );
                                 }}
+                                className="rounded-md"
                             >
                                 Cancel
                             </Button>
 
-                            <LoadingSubmitButton
-                                type="submit"
-                                loading={
-                                    isPending
-                                }
-                                loadingText="Deleting Account..."
-                                className="
-                                    bg-destructive
-                                    text-destructive-foreground
-                                    hover:bg-destructive/90
-                                "
-                                disabled={
-                                    !form
-                                        .watch(
-                                            "password",
-                                        )
-                                        .trim()
-                                }
-                            >
-                                <Trash2 className="mr-2 h-4 w-4" />
-
-                                Delete Account
-                            </LoadingSubmitButton>
+                            {isGoogleOnly ? (
+                                <Button
+                                    type="button"
+                                    onClick={handleGoogleDelete}
+                                    disabled={isPending}
+                                    className="
+                                        rounded-md
+                                        bg-destructive
+                                        text-destructive-foreground
+                                        hover:bg-destructive/90
+                                    "
+                                >
+                                    <ShieldAlert className="h-4 w-4" />
+                                    Continue with Google
+                                </Button>
+                            ) : (
+                                <LoadingSubmitButton
+                                    type="submit"
+                                    loading={isPending}
+                                    loadingText="Deleting Account..."
+                                    className="
+                                            rounded-md
+                                            bg-destructive
+                                            text-destructive-foreground
+                                            hover:bg-destructive/90
+                                        "
+                                    disabled={
+                                        !form
+                                            .watch("password")
+                                            .trim()
+                                    }
+                                >
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Delete Account
+                                </LoadingSubmitButton>
+                            )}
                         </DialogFooter>
                     </form>
                 </Form>

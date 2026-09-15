@@ -10,8 +10,8 @@ export const loginSchema = z.object({
         .min(3, "Username must be at least 3 characters.")
         .max(20, "Username cannot exceed 20 characters.")
         .regex(/^[a-zA-Z0-9._]+$/, {
-        message:
-            "Username can contain only letters, numbers, dots and underscores.",
+            message:
+                "Username can contain only letters, numbers, dots and underscores.",
         }),
 
     password: z
@@ -42,8 +42,8 @@ export const signupSchema = z.object({
             message: "Username cannot exceed 20 characters.",
         })
         .regex(/^[a-zA-Z0-9._]+$/, {
-        message:
-            "Username can contain only letters, numbers, dots and underscores.",
+            message:
+                "Username can contain only letters, numbers, dots and underscores.",
         }),
 
     email: z
@@ -55,7 +55,19 @@ export const signupSchema = z.object({
         .string()
         .min(8, {
             message: "Password must be at least 8 characters long.",
-        }),
+        })
+        .regex(
+            /[A-Za-z]/,
+            "Password must include at least one letter.",
+        )
+        .regex(
+            /[0-9]/,
+            "Password must include at least one number.",
+        )
+        .regex(
+            /[^A-Za-z0-9]/,
+            "Password must include at least one symbol.",
+        ),
 
     city: z
         .string()
