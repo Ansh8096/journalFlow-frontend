@@ -81,8 +81,6 @@ export default function DeleteAccountDialog({
         logout,
     } = useAuth();
 
-
-
     const navigate =
         useNavigate();
 
@@ -172,10 +170,31 @@ export default function DeleteAccountDialog({
 
             await deleteAccount(data);
 
+            /*
+             * Show the success notification while the
+             * current React tree is still mounted.
+             */
+            toast.success(
+                "Account deleted successfully.",
+                {
+                    description:
+                        "Your JournalFlow account and all associated data have been permanently deleted.",
+                },
+            );
+
+            /*
+             * Close the dialog.
+             */
             onOpenChange(false);
 
+            /*
+             * Clear authentication and cached account data.
+             */
             logout();
 
+            /*
+             * Move to login page.
+             */
             navigate(
                 ROUTES.LOGIN,
                 {

@@ -64,25 +64,25 @@ const SignupForm = () => {
 
     useEffect(() => {
 
-    const error =
-        searchParams.get(
-            "error",
-        );
+        const error =
+            searchParams.get(
+                "error",
+            );
 
-    if (
-        error === "account_not_found"
-    ) {
+        if (
+            error === "account_not_found"
+        ) {
 
-        toast.info(
-            "No JournalFlow account found.",
-            {
-                description:
-                    "Please create your account using this signup form or Sign up with Google.",
-            },
-        );
-    }
+            toast.info(
+                "No JournalFlow account found.",
+                {
+                    description:
+                        "Please create your account using this signup form or Sign up with Google.",
+                },
+            );
+        }
 
-}, [searchParams]);
+    }, [searchParams]);
 
     const onSubmit = async (values: SignupFormValues): Promise<void> => {
 
@@ -155,7 +155,7 @@ const SignupForm = () => {
                                                     <Input
                                                         placeholder="Choose a username"
                                                         autoComplete="username"
-                                                        className="rounded-sm pl-10 transition-colors duration-200 ease-out"
+                                                        className="rounded-sm pl-9 transition-colors duration-200 ease-out"
                                                         {...field}
                                                     />
                                                 </div>
@@ -352,7 +352,7 @@ const SignupForm = () => {
 
                         <div className="text-center text-sm text-muted-foreground">
                             Already have an account?{" "}
-                                                    
+
                             <Link
                                 to={ROUTES.LOGIN}
                                 className="font-medium text-violet-600 transition-colors duration-200 ease-out hover:text-violet-700 hover:underline"
