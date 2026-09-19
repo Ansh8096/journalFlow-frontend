@@ -20,7 +20,10 @@ class JournalApi {
         // The service layer will build this FormData.
         const { data } = await client.post<JournalResponse>(
             "/journals",
-            formdata
+            formdata,
+            {
+                timeout: 60000,
+            }
         );
 
         return data;
@@ -105,6 +108,7 @@ class JournalApi {
                     params: {
                         publicId,
                     },
+                    timeout: 60000,
                 }
             );
 
@@ -125,6 +129,7 @@ class JournalApi {
                     params: {
                         publicId,
                     },
+                    timeout: 60000,
                 }
             );
 
@@ -180,6 +185,7 @@ class JournalApi {
             `/journals/${journalId}/download`,
             {
                 responseType: "blob",
+                timeout: 60000,
             }
         );
 
@@ -212,7 +218,10 @@ class JournalApi {
 
         const { data } = await client.post<JournalResponse>(
             "/journals/drafts",
-            formData
+            formData,
+            {
+                timeout: 60000,
+            }
         );
 
         return data;
@@ -296,6 +305,7 @@ class JournalApi {
                 {
                     params: {
                         publicId,
+                        timeout: 60000,
                     },
                 }
             );
@@ -316,6 +326,7 @@ class JournalApi {
                 {
                     params: {
                         publicId,
+                        timeout: 60000,
                     },
                 }
             );
@@ -347,7 +358,10 @@ class JournalApi {
     ): Promise<JournalResponse> {
 
         const { data } = await client.post<JournalResponse>(
-            `/journals/drafts/${journalId}/publish`
+            `/journals/drafts/${journalId}/publish`,
+            {
+                timeout: 60000,
+            }
         );
 
         return data;
