@@ -74,81 +74,72 @@ export default function RichTextViewer({
     }
 
     return (
-        <div
-            role="article"
-            aria-label="Journal content"
-            className={cn(
-                `
-                    prose
-                    prose-slate
-                    dark:prose-invert
+    <div
+        role="article"
+        aria-label="Journal content"
+        className={cn(
+            `
+                journal-rich-text
 
-                    max-w-none
+                prose
+                prose-slate
+                dark:prose-invert
 
-                    selection:bg-primary/20
-                    selection:text-foreground
+                max-w-none
 
-                    prose-headings:scroll-mt-20
-                    prose-headings:font-semibold
-                    prose-headings:tracking-normal
+                selection:bg-primary/20
+                selection:text-foreground
 
-                    prose-h1:text-3xl
-                    prose-h2:text-2xl
-                    prose-h3:text-xl
+                prose-headings:scroll-mt-20
+                prose-headings:font-semibold
+                prose-headings:tracking-normal
 
-                    prose-p:my-5
-                    prose-p:leading-7
+                prose-h1:text-3xl
+                prose-h2:text-2xl
+                prose-h3:text-xl
 
-                    prose-strong:font-semibold
-                    prose-strong:text-foreground
+                prose-p:my-5
+                prose-p:leading-7
 
-                    prose-em:italic
+                prose-strong:font-semibold
+                prose-strong:text-foreground
 
-                    prose-blockquote:border-l-4
-                    prose-blockquote:border-primary
-                    prose-blockquote:rounded-r-lg
-                    prose-blockquote:bg-muted/40
-                    prose-blockquote:py-2
-                    prose-blockquote:pr-4
-                    prose-blockquote:pl-4
-                    prose-blockquote:not-italic
-                    prose-blockquote:text-muted-foreground
+                prose-em:italic
 
-                    prose-ul:list-disc
-                    prose-ul:pl-6
-                    prose-ul:space-y-2
+                prose-ul:list-disc
+                prose-ul:pl-6
+                prose-ul:space-y-2
 
-                    prose-ol:list-decimal
-                    prose-ol:pl-6
-                    prose-ol:space-y-2
+                prose-ol:list-decimal
+                prose-ol:pl-6
+                prose-ol:space-y-2
 
-                    prose-li:my-1
-                    prose-li:marker:text-primary
+                prose-li:my-1
+                prose-li:marker:text-primary
 
-                    prose-a:text-primary
-                    prose-a:font-medium
-                    prose-a:no-underline
-                    prose-a:break-all
-                    hover:prose-a:underline
+                prose-a:text-primary
+                prose-a:font-medium
+                prose-a:no-underline
+                prose-a:break-all
+                hover:prose-a:underline
 
-                    prose-code:rounded
-                    prose-code:bg-muted
-                    prose-code:px-1.5
-                    prose-code:py-0.5
-                    prose-code:text-sm
+                prose-code:rounded
+                prose-code:bg-muted
+                prose-code:px-1.5
+                prose-code:py-0.5
+                prose-code:text-sm
 
-                    prose-pre:rounded-xl
-                    prose-pre:border
-                    prose-pre:bg-muted
+                prose-pre:rounded-xl
+                prose-pre:border
+                prose-pre:bg-muted
 
-                    prose-hr:my-8
-                `,
-                className,
-
-            )}
-            dangerouslySetInnerHTML={{
-                __html: sanitizedHtml,
-            }}
-        />
-    );
+                prose-hr:my-8
+            `,
+            className,
+        )}
+        dangerouslySetInnerHTML={{
+            __html: sanitizedHtml,
+        }}
+    />
+);
 }

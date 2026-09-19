@@ -85,14 +85,15 @@ export default function JournalContent({
 
                 <CardContent className="space-y-5">
                     <RichTextViewer
-                        html={journal.content}
-                        className="
-                            prose
-                            prose-neutral
-                            max-w-none
-                            dark:prose-invert
-                        "
-                    />
+    html={journal.content}
+    className="
+        journal-rich-text
+        prose
+        prose-neutral
+        max-w-none
+        dark:prose-invert
+    "
+/>
                 </CardContent>
             </Card>
         </section>

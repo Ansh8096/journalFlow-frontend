@@ -148,11 +148,17 @@
 }
 
 
-/* ===== Blockquote ===== */
+/* =========================================================
+    Shared Blockquote
+    Used by:
+    - Tiptap editor
+    - Journal viewer
+========================================================= */
 
-.ProseMirror blockquote {
+.ProseMirror blockquote,
+.journal-rich-text blockquote {
     position: relative;
-    
+
     padding: 1rem 1.25rem 1rem 1.5rem;
 
     border-left: 4px solid rgb(139 92 246);
@@ -168,22 +174,44 @@
     transition: background-color 0.2s ease;
 }
 
-.ProseMirror blockquote:hover {
+.ProseMirror blockquote:hover,
+.journal-rich-text blockquote:hover {
     background: rgb(237 233 254);
 }
 
-.ProseMirror blockquote p {
+.ProseMirror blockquote p,
+.journal-rich-text blockquote p {
     margin: 0;
 }
 
-/* Dark mode */
-.dark .ProseMirror blockquote {
+/*
+ * Tailwind Typography adds quotation marks
+ * to blockquotes by default. Remove them so
+ * the editor and viewer look identical.
+ */
+.journal-rich-text blockquote::before,
+.journal-rich-text blockquote::after,
+.journal-rich-text blockquote p::before,
+.journal-rich-text blockquote p::after {
+    content: none !important;
+}
+
+/* =========================================================
+    Dark mode
+========================================================= */
+
+.dark .ProseMirror blockquote,
+.dark .journal-rich-text blockquote {
     border-left-color: rgb(124 58 237);
+
     background: rgb(46 16 70);
+
     color: rgb(226 232 240);
 }
 
-.dark .ProseMirror blockquote:hover {
+.dark .ProseMirror blockquote:hover,
+.dark .journal-rich-text blockquote:hover {
     background: rgb(59 24 88);
+
     color: rgb(241 245 249);
 }

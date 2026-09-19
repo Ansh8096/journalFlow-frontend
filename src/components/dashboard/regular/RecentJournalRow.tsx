@@ -49,7 +49,7 @@ export default function RecentJournalRow({
 
     const navigate = useNavigate();
 
-    
+
     const journalDetailsRoute =
         buildJournalDetailsRoute(
             journal.id,
@@ -103,10 +103,9 @@ export default function RecentJournalRow({
                 transition-colors
                 duration-200
                 ease-out
-                ${
-                    journal.favorite
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-muted-foreground"
+                ${journal.favorite
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-muted-foreground"
                 }
             `}
         />
@@ -289,7 +288,7 @@ export default function RecentJournalRow({
                             {journal.title}
                         </h3>
 
-                        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground truncate">
                             {journal.preview}
                         </p>
                     </Link>
@@ -358,7 +357,7 @@ export default function RecentJournalRow({
                         {journal.title}
                     </h3>
 
-                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground truncate">
                         {journal.preview}
                     </p>
                 </Link>
@@ -371,22 +370,22 @@ export default function RecentJournalRow({
                 </Badge>
 
                 {/* Date / Time */}
-<div className="text-sm">
-    <p
-        className="
-            font-medium
-            transition-colors
-            duration-200
-            ease-out
-            group-hover:text-violet-700
-            dark:group-hover:text-violet-400
-        "
-    >
-        {journal.date}
-    </p>
+                <div className="text-sm">
+                    <p
+                        className="
+                            font-medium
+                            transition-colors
+                            duration-200
+                            ease-out
+                            group-hover:text-violet-700
+                            dark:group-hover:text-violet-400
+                        "
+                    >
+                        {journal.date}
+                    </p>
 
-    <p
-        className="
+                    <p
+                        className="
             text-muted-foreground
             transition-colors
             duration-200
@@ -394,10 +393,10 @@ export default function RecentJournalRow({
             group-hover:text-violet-600
             dark:group-hover:text-violet-400
         "
-    >
-        {journal.time}
-    </p>
-</div>
+                    >
+                        {journal.time}
+                    </p>
+                </div>
 
                 {/* Cover Image */}
                 {coverImage}
